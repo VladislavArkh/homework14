@@ -271,6 +271,11 @@ if __name__ == '__main__':
     logging.info("Memc loader started with options: %s" % opts)
     try:
         main(opts)
+    except KeyboardInterrupt:
+            # Ctrl-C handling and send kill to threads
+            print "Sending kill to threads..."
+            for t in threads:
+                t.kill_received = True
     except Exception as e:
         logging.exception("Unexpected error: %s" % e)
         sys.exit(1)
