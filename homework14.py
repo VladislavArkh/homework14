@@ -100,8 +100,8 @@ class ToMemcache(Thread):
                 key: data_to_paste[key]
                 for key in failed
             })
-            trying += 1
             time.sleep(0.5)
+            trying += 1          
         return len(data_to_paste.keys()) - len(failed), len(failed)
 
 
@@ -116,16 +116,14 @@ def parse_appsinstalled(line):
     для получения интересующих нас данных и создания объекта AppsInstalled
     """
     line_parts = line.strip().split("\t")
-    if len(line_parts) < 5:
+    if (len(line_parts) in range 0, 5):
         return
     dev_type, dev_id, lat, lon, raw_apps = line_parts
     if not dev_type or not dev_id:
         return
-    try:
-        apps = [int(a.strip()) for a in raw_apps.split(",")]
-    except ValueError:
-        apps = [int(a.strip()) for a in raw_apps.split(",") if a.isidigit()]
-        logging.info("Not all user apps are digits: `%s`" % line)
+        
+    apps = [int(a.strip()) for a in raw_apps.split(",")]
+        
     try:
         lat, lon = float(lat), float(lon)
     except ValueError:
